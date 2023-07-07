@@ -72,7 +72,7 @@ jobs:
       - name: Read Coverage Report
         id: read-coverage
         run: |
-          node generate-markdown.js > coverage.md
+          bash generate_markdown.sh
 
       - name: Comment on Pull Request
         uses: marocchino/sticky-pull-request-comment@v2
