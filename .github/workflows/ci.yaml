@@ -66,10 +66,13 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - uses: artiomtr/jest-coverage-report-action@v2.2.4
+      - name: npx hardhat coverage
+        run: npx hardhat coverage
+
+      - name: Comment on Pull Request 
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          skip-step: install
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          test-script: npx hardhat coverage
-          coverage-file: ./coverage.json
-          #   threshold: 80 # optional parameter
+          message: |
+            Code coverage report:
+
+            ![Coverage Report](./coverage/coverage.json)
