@@ -74,11 +74,13 @@ jobs:
         run: |
           echo "::set-output name=report::$(cat ./coverage.json)"
 
+          cat ${{ steps.read-coverage.outputs.report }} >> coverage.md
+
       - name: Comment on Pull Request
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          path: coverage.json
+          path: ${{ steps.read-coverage.outputs.report }}
           message: |
             Code coverage report:
             
-            $(cat coverage.json)
+            $(cat ${{ steps.read-coverage.outputs.report }})
