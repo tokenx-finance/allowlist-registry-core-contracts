@@ -75,4 +75,4 @@ jobs:
           message: |
             Code coverage report:
 
-            ![Coverage Report](./coverage/coverage.json)
+            ![Coverage Report](./coverage/index.html)
