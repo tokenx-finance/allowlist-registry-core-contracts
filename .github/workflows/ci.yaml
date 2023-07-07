@@ -75,4 +75,6 @@ jobs:
           message: |
             Code coverage report:
 
-            ![Coverage Report](./coverage/index.html)
+            ```
+            $cat ./coverage/index.html)
+            ```
