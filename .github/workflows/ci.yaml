@@ -76,5 +76,5 @@ jobs:
             Code coverage report:
 
             ```
-            $cat ./coverage/index.html)
+            $(cat ./coverage/index.html)
             ```
