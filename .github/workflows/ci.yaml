@@ -77,4 +77,4 @@ jobs:
       - name: Comment on Pull Request 
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          message: ${{ steps.read-coverage.outputs.report }}
+          path: ${{ steps.read-coverage.outputs.report }}
