@@ -1,13 +1,9 @@
-# Sample Hardhat Project
+# Allowlist Registry Core Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+[![Continuous Integration Testing](https://github.com/tokenx-finance/allowlist-registry-core-contracts/actions/workflows/ci.yaml/badge.svg)](https://github.com/tokenx-finance/allowlist-registry-core-contracts/actions/workflows/ci.yaml)
 
-Try running some of the following tasks:
+This repository contains the core smart contracts for the Allowlist Registry.
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+## Licensing
+
+The primary license for Allowlist Registry is the General Public License 2.0 or later (`GPL-2.0-or-later`). However, some files are dual licensed under `MIT`:
