@@ -1,4 +1,4 @@
-name: Continuous Integration Testing Alpha
+name: Continuous Integration Testing
 
 on:
   pull_request:
