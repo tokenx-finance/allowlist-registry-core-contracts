@@ -40,7 +40,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable, Initializabl
     /**
      * @dev Emitted when a new registry is added to the allowlist registry proxy.
      */
-    event RegistryAdded(string provider, address indexed registry);
+    event RegistryAdded(string indexed provider, address indexed registry);
 
     /**
      * @dev Emitted when a registry is removed from the allowlist registry proxy.
@@ -50,12 +50,12 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable, Initializabl
     /**
      * @dev Emitted when a registry is paused.
      */
-    event RegistryPaused(address registry);
+    event RegistryPaused(address indexed registry);
 
     /**
      * @dev Emitted when a registry is unpaused.
      */
-    event RegistryUnpaused(address registry);
+    event RegistryUnpaused(address indexed registry);
 
     modifier existRegistry(address registry) {
         if (!Storage._registries.contains(registry)) {
