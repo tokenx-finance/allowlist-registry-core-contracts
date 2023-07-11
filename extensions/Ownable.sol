@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// TokenX Contracts v1.0.0 (extensions/Ownable.sol)
+// OpenZeppelin Contracts (last updated v4.9.0) (extensions/Ownable.sol)
 pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/utils/Context.sol";
@@ -8,6 +8,9 @@ import "@openzeppelin/contracts/utils/Context.sol";
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) that can be granted exclusive access to
  * specific functions.
+ *
+ * The initial owner is set to the address provided by the deployer. This can
+ * later be changed with {transferOwnership}.
  *
  * This module is used through inheritance. It will make available the modifier
  * `onlyOwner`, which can be applied to your functions to restrict their use to
@@ -26,13 +29,17 @@ abstract contract Ownable is Context {
      */
     error OwnableInvalidOwner(address owner);
 
-    /**
-     * @dev Emitted when ownership is transferred.
-     */
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     /**
-     * @dev The caller account is not authorized to perform an operation.
+     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.
+     */
+    constructor(address initialOwner) {
+        _transferOwnership(initialOwner);
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
      */
     modifier onlyOwner() {
         _checkOwner();
@@ -74,7 +81,6 @@ abstract contract Ownable is Context {
         if (newOwner == address(0)) {
             revert OwnableInvalidOwner(address(0));
         }
-
         _transferOwnership(newOwner);
     }
 
@@ -85,7 +91,6 @@ abstract contract Ownable is Context {
     function _transferOwnership(address newOwner) internal virtual {
         address oldOwner = _owner;
         _owner = newOwner;
-
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }

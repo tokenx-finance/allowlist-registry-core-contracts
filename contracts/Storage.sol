@@ -16,7 +16,7 @@ contract Storage {
 
     struct RegistryInfo {
         string provider;
-        bool pause;
+        bool paused;
     }
     
     mapping(address => RegistryInfo) internal _registryInfo;

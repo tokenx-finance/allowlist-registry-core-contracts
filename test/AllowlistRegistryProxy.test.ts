@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-const NAME = "INVESTMENT_TOKEN";
+const PROXY_NAME = "INVESTMENT_TOKEN";
 const VERSION = "1.0.0";
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -13,36 +13,11 @@ describe("AllowlistRegistryProxy", async () => {
 
   beforeEach(async () => {
     const Registry = await ethers.getContractFactory("AllowlistRegistry");
-    const Proxy = await ethers.getContractFactory(
-      "AllowlistRegistryProxy"
-    );
+    const Proxy = await ethers.getContractFactory("AllowlistRegistryProxy");
     [OWNER, ADDR1] = await ethers.getSigners();
 
     registry = await Registry.deploy();
-    proxy = await Proxy.deploy();
-
-    await proxy.initialize(NAME);
-  });
-
-  describe("initialize", () => {
-    it("should initialize success", async () => {
-      const Proxy2 = await ethers.getContractFactory(
-        "AllowlistRegistryProxy"
-      );
-      const proxy2 = await Proxy2.deploy();
-
-      expect(await proxy2.name()).to.equal("");
-
-      await proxy2.initialize("INVESTMENT_TOKEN_2");
-
-      expect(await proxy2.name()).to.equal("INVESTMENT_TOKEN_2");
-    });
-
-    it("should initialize failed when already initialized", async () => {
-      await expect(proxy.initialize(NAME)).to.be.revertedWith(
-        "Initializable: contract is already initialized"
-      );
-    });
+    proxy = await Proxy.deploy(PROXY_NAME);
   });
 
   describe("version", () => {
@@ -54,7 +29,7 @@ describe("AllowlistRegistryProxy", async () => {
 
   describe("name", () => {
     it("should get the name of the allowlist registry proxy", async () => {
-      expect(await proxy.name()).to.equal(NAME);
+      expect(await proxy.name()).to.equal(PROXY_NAME);
     });
   });
 
@@ -94,9 +69,7 @@ describe("AllowlistRegistryProxy", async () => {
     it("should return the provider name and pause status of the allowlist registry", async () => {
       await proxy.addRegistry("Token X", registry.target);
 
-      const info = await proxy["getRegistryInfo(address)"](
-        registry.target
-      );
+      const info = await proxy["getRegistryInfo(address)"](registry.target);
 
       expect(info[0]).to.equal("Token X");
       expect(info[1]).to.be.false;
@@ -107,6 +80,26 @@ describe("AllowlistRegistryProxy", async () => {
 
       expect(info[0]).to.equal("");
       expect(info[1]).to.be.false;
+    });
+  });
+
+  describe("getAccountProviderInfo", () => {
+    it("should return the provider name and registry address of an account", async () => {
+      await proxy.addRegistry("Token X", registry.target);
+
+      await registry.addAllowlist(ADDR1.address);
+
+      const info = await proxy.getAccountProviderInfo(ADDR1.address);
+
+      expect(info[0]).to.equal("Token X");
+      expect(info[1]).to.equal(registry.target);
+    });
+
+    it("should return an empty of the provider name and registry address of an account", async () => {
+      const info = await proxy.getAccountProviderInfo(ZERO_ADDRESS);
+
+      expect(info[0]).to.equal("");
+      expect(info[1]).to.equal(ZERO_ADDRESS);
     });
   });
 
@@ -141,9 +134,7 @@ describe("AllowlistRegistryProxy", async () => {
 
       await proxy.removeRegistry(registry.target);
 
-      const info = await proxy["getRegistryInfo(address)"](
-        registry.target
-      );
+      const info = await proxy["getRegistryInfo(address)"](registry.target);
 
       expect(info[0]).to.equal("");
       expect(info[1]).to.be.false;
@@ -168,9 +159,7 @@ describe("AllowlistRegistryProxy", async () => {
 
       await proxy.pauseRegistry(registry.target);
 
-      const info = await proxy["getRegistryInfo(address)"](
-        registry.target
-      );
+      const info = await proxy["getRegistryInfo(address)"](registry.target);
 
       expect(info[0]).to.equal("Token X");
       expect(info[1]).to.be.true;
@@ -207,9 +196,7 @@ describe("AllowlistRegistryProxy", async () => {
 
       await proxy.unpauseRegistry(registry.target);
 
-      const info = await proxy["getRegistryInfo(address)"](
-        registry.target
-      );
+      const info = await proxy["getRegistryInfo(address)"](registry.target);
 
       expect(info[0]).to.equal("Token X");
       expect(info[1]).to.be.false;
