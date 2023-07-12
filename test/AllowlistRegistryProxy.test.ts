@@ -85,21 +85,26 @@ describe("AllowlistRegistryProxy", async () => {
 
   describe("getAccountProviderInfo", () => {
     it("should return the provider name and registry address of an account", async () => {
-      await proxy.addRegistry("Token X", registry.target);
+      const ExchangeRegistry = await ethers.getContractFactory("AllowlistRegistry");
+      const exchangeRegistry = await ExchangeRegistry.deploy()
 
-      await registry.addAllowlist(ADDR1.address);
+      await proxy.addRegistry("Token X", registry.target);
+      await proxy.addRegistry("Exchange", exchangeRegistry.target);
+
+      await exchangeRegistry.addAllowlist(ADDR1.address);
 
       const info = await proxy.getAccountProviderInfo(ADDR1.address);
 
-      expect(info[0]).to.equal("Token X");
-      expect(info[1]).to.equal(registry.target);
+      expect(info[0]).to.deep.equals(["Token X", "Exchange"]);
+      expect(info[1]).to.deep.equals([registry.target, exchangeRegistry.target])
+      expect(info[2]).to.deep.equals([false, true])
     });
 
     it("should return an empty of the provider name and registry address of an account", async () => {
       const info = await proxy.getAccountProviderInfo(ZERO_ADDRESS);
 
-      expect(info[0]).to.equal("");
-      expect(info[1]).to.equal(ZERO_ADDRESS);
+      expect(info[0]).to.empty;
+      expect(info[1]).to.empty;
     });
   });
 

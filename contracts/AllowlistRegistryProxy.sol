@@ -136,20 +136,26 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
     /**
     * @dev Returns registry information of the given account's provider.
     * @param account The address of the account.
-    * @return The name of the provider and the registry address of the provider.
+    * @return A tuple containing arrays of provider names, provider addresses, and account's allowlist status with each provider.
     */
-    function getAccountProviderInfo(address account) public view returns (string memory, address) {
+    function getAccountProviderInfo(address account) public view returns (string[] memory, address[] memory, bool[] memory) {
         uint256 length = Storage._registries.length();
+        string[] memory providers = new string[](length);
+        address[] memory addresses = new address[](length);
+        bool[] memory allowlists = new bool[](length);
+
         for (uint256 i = 0; i < length; i++) {
             address registry = Storage._registries.at(i);
+            RegistryInfo memory registryInfo = Storage._registryInfo[registry];
+            providers[i] = registryInfo.provider;
+            addresses[i] = registry;
 
             if (IAllowlistRegistry(registry).isAllowlist(account)) {
-                RegistryInfo memory registryInfo = Storage._registryInfo[registry];
-                return (registryInfo.provider, registry);
+                allowlists[i] = true;
             }
         }
 
-        return ("", address(0));
+        return (providers, addresses, allowlists);
     }
 
     /**
