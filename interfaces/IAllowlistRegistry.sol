@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// TokenX Contracts v1.0.3 (interfaces/AllowlistRegistry.sol)
-pragma solidity 0.8.19;
+// TokenX Contracts v1.0.4 (interfaces/AllowlistRegistry.sol)
+pragma solidity 0.8.21;
 
 interface IAllowlistRegistry {
     /**
