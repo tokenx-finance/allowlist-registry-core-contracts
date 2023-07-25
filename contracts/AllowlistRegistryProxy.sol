@@ -91,14 +91,14 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
     /**
      * @dev Returns the version of the allowlist registry proxy.
      */
-    function version() public pure returns (string memory) {
+    function version() external pure returns (string memory) {
         return '1.0.0';
     }
 
     /**
      * @dev Returns the name of the allowlist registry proxy.
      */
-    function name() public view returns (string memory) {
+    function name() external view returns (string memory) {
         return Storage._proxyName;
     }
 
@@ -111,7 +111,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * @dev Returns an array of registered registry addresses.
      * @return registry addresses.
      */
-    function registries() public view returns (address[] memory) {
+    function registries() external view returns (address[] memory) {
         return Storage._registries.values();
     }
 
@@ -119,7 +119,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * @dev Returns the total length of registries in the allowlist registry proxy.
      * @return total length of registries.
      */
-    function totalRegistry() public view returns (uint256) {
+    function totalRegistry() external view returns (uint256) {
         return Storage._registries.length();
     }
 
@@ -128,7 +128,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * @param registry The address of the registry.
      * @return provider name and paused status of the registry.
      */
-    function getRegistryInfo(address registry) public view returns (string memory, bool) {
+    function getRegistryInfo(address registry) external view returns (string memory, bool) {
         RegistryInfo memory registryInfo = Storage._registryInfo[registry];
         return (registryInfo.provider, registryInfo.paused);
     }
@@ -138,7 +138,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
     * @param account The address of the account.
     * @return A tuple containing arrays of provider names, provider addresses, and account's allowlist status with each provider.
     */
-    function getAccountProviderInfo(address account) public view returns (string[] memory, address[] memory, bool[] memory) {
+    function getAccountProviderInfo(address account) external view returns (string[] memory, address[] memory, bool[] memory) {
         uint256 length = Storage._registries.length();
         string[] memory providers = new string[](length);
         address[] memory addresses = new address[](length);
@@ -168,7 +168,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * - the caller must be owner.
      * - the registry should not already exist in the allowlist registry proxy.
      */
-    function addRegistry(string memory provider, address registry) public onlyOwner notExistRegistry(registry) {
+    function addRegistry(string memory provider, address registry) external onlyOwner notExistRegistry(registry) {
         Storage._registries.add(registry);
         Storage._registryInfo[registry] = RegistryInfo(provider, false);
 
@@ -184,7 +184,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * - the caller must be owner.
      * - the registry should exist in the allowlist registry proxy.
      */
-    function removeRegistry(address registry) public onlyOwner existRegistry(registry) {
+    function removeRegistry(address registry) external onlyOwner existRegistry(registry) {
         Storage._registries.remove(registry);
         delete Storage._registryInfo[registry];
 
@@ -200,7 +200,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * - the caller must be owner.
      * - the registry should not be paused.
      */
-    function pauseRegistry(address registry) public onlyOwner existRegistry(registry) unpausedRegistry(registry) {
+    function pauseRegistry(address registry) external onlyOwner existRegistry(registry) unpausedRegistry(registry) {
         Storage._registryInfo[registry].paused = true;
 
         emit RegistryPaused(registry);
@@ -215,7 +215,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * - the caller must be owner.
      * - the registry should be paused.
      */
-    function unpauseRegistry(address registry) public onlyOwner existRegistry(registry) pausedRegistry(registry) {
+    function unpauseRegistry(address registry) external onlyOwner existRegistry(registry) pausedRegistry(registry) {
         Storage._registryInfo[registry].paused = false;
 
         emit RegistryUnpaused(registry);
@@ -271,7 +271,7 @@ contract AllowlistRegistryProxy is Storage, Ownable, Blacklistable {
      * @dev Returns the allowlist status of an account.
      * @param account The address of the account.
      */
-    function isAllowlist(address account) public view returns (bool) {
+    function isAllowlist(address account) external view returns (bool) {
         if (isBlacklist(account)) {
             return false;
         }
