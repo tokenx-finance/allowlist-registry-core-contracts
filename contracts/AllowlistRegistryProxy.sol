@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// TokenX Contracts v1.0.0 (contracts/AllowlistRegistryProxy.sol)
-pragma solidity 0.8.19;
+// TokenX Contracts v1.0.1 (contracts/AllowlistRegistryProxy.sol)
+pragma solidity 0.8.21;
 
 import {Storage} from "./Storage.sol";
 import {Ownable} from "../extensions/Ownable.sol";

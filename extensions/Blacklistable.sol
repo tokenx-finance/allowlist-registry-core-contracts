@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-// TokenX Contracts v1.0.0 (extensions/Blacklistable.sol)
-pragma solidity 0.8.19;
+// TokenX Contracts v1.0.1 (extensions/Blacklistable.sol)
+pragma solidity 0.8.21;
 
 /**
  * @dev Contract module that allows child contracts to implement a blacklist control
